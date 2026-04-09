@@ -1,0 +1,19 @@
+{
+  "poll_interval_seconds": 30,
+
+  "scan_subnet": null,
+
+  "devices": [
+    { "name": "Планшет",   "ip": "192.168.1.100", "type": "tablet"  },
+    { "name": "Шлем 01",   "ip": "192.168.1.101", "type": "helmet"  },
+    { "name": "Шлем 02",   "ip": "192.168.1.102", "type": "helmet"  },
+    { "name": "Шлем 03",   "ip": "192.168.1.103", "type": "helmet"  },
+    { "name": "Шлем 04",   "ip": "192.168.1.104", "type": "helmet"  },
+    { "name": "Шлем 05",   "ip": "192.168.1.105", "type": "helmet"  },
+    { "name": "Шлем 06",   "ip": "192.168.1.106", "type": "helmet"  },
+    { "name": "Шлем 07",   "ip": "192.168.1.107", "type": "helmet"  },
+    { "name": "Шлем 08",   "ip": "192.168.1.108", "type": "helmet"  },
+    { "name": "Шлем 09",   "ip": "192.168.1.109", "type": "helmet"  },
+    { "name": "Шлем 10",   "ip": "192.168.1.110", "type": "helmet"  }
+  ]
+}

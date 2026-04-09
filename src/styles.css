@@ -1,0 +1,88 @@
+/* Глобальные стили */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #0f0f0f;
+  color: #eaeaea;
+}
+
+.App {
+  text-align: center;
+}
+
+/* Тени для карточек */
+.shadow-neon {
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+/* Анимация вращения для кнопок */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hover эффекты */
+.hover-brightness:hover {
+  filter: brightness(1.2);
+}
+/* Делаем иконку календаря светлой */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+/* Базовый класс для 3D карточки */
+.card-3d-effect {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  /* Глубокая внешняя тень для объема */
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+.card-3d-effect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Стеклянный перелив сверху */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+/* Внутреннее свечение (эффект фаски) */
+.card-3d-effect {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Эффект при наведении — карточка "приподнимается" */
+.card-3d-effect:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+/* Оживляем иконки и цифры внутри */
+.card-3d-effect h3,
+.card-3d-effect p,
+.card-3d-effect span {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}

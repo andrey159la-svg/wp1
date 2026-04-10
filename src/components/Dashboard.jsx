@@ -49,6 +49,7 @@ const fmt = (n) =>
     : `${n.toFixed(0)} ₽`;
 
 // ─── Финансовый блок ────────────────────────────────────────────────────────
+// ─── Финансовый блок ────────────────────────────────────────────────────────
 const FinanceBlock = ({ loading: globalLoading }) => {
   const [localDeals, setLocalDeals] = useState([]);
   const [localLoading, setLocalLoading] = useState(false);
@@ -60,7 +61,9 @@ const FinanceBlock = ({ loading: globalLoading }) => {
   };
 
   const [dates, setDates] = useState({
-    from: getLocalDateString(new Date(new Date().getFullYear(), new Date().getMonth(), 1)),
+    from: getLocalDateString(
+      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    ),
     to: getLocalDateString(new Date()),
   });
 
@@ -88,31 +91,38 @@ const FinanceBlock = ({ loading: globalLoading }) => {
     if (!localDeals || localDeals.length === 0)
       return { revenue: 0, avgCheck: 0, wonCount: 0, paidCount: 0, conversion: 0 };
 
-    // 1. Фильтруем успешные стадии для выручки и конверсии
     const wonDeals = localDeals.filter((d) => d.STAGE_ID === "C37:WON");
     const paidDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_EABX1N");
     const bukzaDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_XBD8P1");
 
-    // 2. Исключаем некорректные лиды (предположим ID стадии 'C37:LOSE' или 'C37:APOLOGY')
-    // Замени "C37:LOSE" на реальный ID стадии некорректных лидов, если он другой
+    // Фильтруем мусор (некорректные лиды). 
+    // Если в Битриксе другой ID для брака, поменяй "C37:LOSE" на него.
     const validDeals = localDeals.filter((d) => d.STAGE_ID !== "C37:13");
 
     const sumWon = wonDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
     const sumPaid = paidDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
     const sumBukza = bukzaDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
 
-    // Расчет конверсии: (Успех + Предоплата + Букза) / Всего годных
     const totalSuccess = wonDeals.length + paidDeals.length + bukzaDeals.length;
-    const conversion = validDeals.length > 0 ? (totalSuccess / validDeals.length) * 100 : 0;
+    const conv = validDeals.length > 0 ? (totalSuccess / validDeals.length) * 100 : 0;
 
     return {
       revenue: sumWon + sumPaid + sumBukza,
       avgCheck: wonDeals.length > 0 ? sumWon / wonDeals.length : 0,
       wonCount: wonDeals.length,
       paidCount: paidDeals.length + bukzaDeals.length,
-      conversion: conversion.toFixed(1), // Оставляем один знак после запятой
+      conversion: conv.toFixed(1),
     };
   }, [localDeals]);
+
+  const isDefaultRange = useMemo(() => {
+    const monthStart = getLocalDateString(
+      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    );
+    return dates.from === monthStart;
+  }, [dates]);
+
+  const isLoading = localLoading || globalLoading;
 
   const cards = [
     {
@@ -126,8 +136,8 @@ const FinanceBlock = ({ loading: globalLoading }) => {
     {
       label: "Конверсия (чистая)",
       value: `${stats.conversion}%`,
-      icon: Activity, // Иконка пульса/активности для конверсии
-      color: "#f472b6", // Розовый акцент
+      icon: Activity,
+      color: "#f472b6",
       bg: "rgba(244,114,182,0.12)",
       shadow: "rgba(244,114,182,0.3)",
     },
@@ -148,6 +158,74 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       shadow: "rgba(52,211,153,0.3)",
     },
   ];
+
+  return (
+    <div
+      className="rounded-2xl p-5 border border-white/5 shadow-inner"
+      style={{ background: "rgba(15,17,22,0.6)" }}
+    >
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
+        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+          <DollarSign size={14} className="text-emerald-400" />
+          Финансы · {isDefaultRange ? "текущий месяц" : "диапазон"}
+        </h3>
+
+        <div className="flex items-center gap-2 bg-slate-900/50 p-1.5 rounded-xl border border-white/5 shadow-2xl backdrop-blur-sm">
+          <CalendarRange size={14} className="text-blue-400 ml-2" />
+          <input
+            type="date"
+            value={dates.from}
+            onChange={(e) =>
+              setDates((prev) => ({ ...prev, from: e.target.value }))
+            }
+            className="bg-transparent text-[10px] text-white outline-none"
+          />
+          <span className="text-slate-600 text-[10px]">—</span>
+          <input
+            type="date"
+            value={dates.to}
+            onChange={(e) =>
+              setDates((prev) => ({ ...prev, to: e.target.value }))
+            }
+            className="bg-transparent text-[10px] text-white outline-none"
+          />
+          {localLoading && (
+            <RefreshCw size={12} className="animate-spin text-blue-400 mx-2" />
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {cards.map(({ label, value, icon: Icon, color, bg, shadow }) => (
+          <div
+            key={label}
+            className="relative overflow-hidden rounded-xl p-4 flex flex-col gap-2 transition-all duration-300 hover:scale-[1.03] group"
+            style={{
+              background: `linear-gradient(135deg, ${bg}, rgba(0,0,0,0.4))`,
+              borderTop: "1px solid rgba(255,255,255,0.15)",
+              borderLeft: "1px solid rgba(255,255,255,0.1)",
+              boxShadow: `0 10px 20px -5px rgba(0, 0, 0, 0.5), inset 0 0 15px ${shadow}, 0 0 20px rgba(0, 0, 0, 0.1)`,
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <Icon size={14} style={{ color }} />
+              <span className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                {label}
+              </span>
+            </div>
+            <span className="text-2xl font-black text-white leading-none">
+              {isLoading ? "..." : value}
+            </span>
+            <div
+              className="absolute top-0 right-0 w-1 h-full opacity-60 shadow-[0_0_10px_1px_currentColor]"
+              style={{ background: color, color: color }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
   const isLoading = localLoading || globalLoading;
 

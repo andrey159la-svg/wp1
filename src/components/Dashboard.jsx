@@ -80,10 +80,10 @@ const FinanceBlock = ({ loading: globalLoading }) => {
 
     const wonDeals = localDeals.filter((d) => d.STAGE_ID === "C37:WON");
     const paidDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_EABX1N");
-    const bukzaDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_XBD8P1");
+    const bukzaDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_E9MX9X");
     
     // Брак/Мусор
-    const validDeals = localDeals.filter((d) => d.STAGE_ID !== "C37:LOSE");
+    const validDeals = localDeals.filter((d) => d.STAGE_ID !== "C37:13");
 
     const sumWon = wonDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
     const sumPaid = paidDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
@@ -245,13 +245,17 @@ const Dashboard = () => {
         }
       });
 
-      const totalRevenue = (stageSums["C37:WON"] || 0) + (stageSums["C37:UC_EABX1N"] || 0) + (stageSums["C37:UC_XBD8P1"] || 0);
-      const wonCount = stageCounts["C37:WON"] || 0;
+      const totalRevenue = (stageSums["C37:WON"] || 0) + (stageSums["C37:UC_EABX1N"] || 0) + (stageSums["C37:UC_E9MX9X"] || 0);
+      const wonCount = 
+  (stageCounts["C37:WON"] || 0) + 
+  (stageCounts["C37:UC_EABX1N"] || 0) + 
+  (stageCounts["C37:UC_E9MX9X"] || 0);
 
       setReportData({
         title, stageCounts, stageSums, total: allDeals.length,
-        totalRevenue, avgCheck: wonCount > 0 ? stageSums["C37:WON"] / wonCount : 0,
-        wonCount, generated: new Date(),
+        totalRevenue, avgCheck: wonCount > 0 ? totalRevenue / wonCount : 0, 
+        wonCount, 
+        generated: new Date(),
       });
     } catch (e) { console.error("Report error", e); }
     finally { setReportLoading(false); }

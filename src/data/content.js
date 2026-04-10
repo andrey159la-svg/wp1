@@ -22,6 +22,7 @@ import {
   GraduationCap,
   Scale,
   BarChart2,
+  FolderOpen,
 } from "lucide-react";
 import {
   Rocket,
@@ -31,6 +32,7 @@ import {
   Share2,
   Settings,
 } from "lucide-react";
+
 
 export const bitrixUsers = [
   { name: "Андрей", login: "andrey59la@yandex.ru", pass: "Alik13750" },
@@ -520,33 +522,35 @@ export const allContent = {
   }, // ПРОВЕРЬ ЭТУ ЗАПЯТУЮ! Она обязательна перед новым блоком.
 
   batteries: {
-    label: "ЗАРЯД ШЛЕМОВ ПОКА В РАЗРАБОТКЕ, НЕ ОПИРАТЬСЯ НА ЭТИ ДАННЫЕ",
+    label: "ЗАРЯД ШЛЕМОВ ПОКА В РАЗРАБОТКЕ...",
     icon: Zap,
     color: "text-green-400",
   },
-};
-files: {
-  label: "Файлы",
-  icon: FolderOpen,   // добавь FolderOpen в импорт lucide-react
-  color: "text-yellow-400",
-  data: [
-    {
-      name: "Для печати",
-      desc: "Листовки, баннеры, полиграфия",
-      files: [
-        { name: "Листовка А5.pdf", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
-      ],
-    },
-    {
-      name: "Прайсы для ТВ",
-      desc: "Слайды для экранов",
-      files: [
-        { name: "Прайс основной.jpg", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
-      ],
-    },
-    // новые папки добавляй сюда же по тому же шаблону
-  ],
-},
+
+  files: {
+    label: "Файлы",
+    icon: FolderOpen,
+    color: "text-yellow-400",
+    accent: "border-yellow-400/50",
+    bg: "bg-yellow-400/10",
+    data: [
+      {
+        name: "Для печати",
+        desc: "Листовки, баннеры, полиграфия",
+        files: [
+          { name: "Листовка А5.pdf", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+        ],
+      },
+      {
+        name: "Прайсы для ТВ",
+        desc: "Слайды для экранов",
+        files: [
+          { name: "Прайс основной.jpg", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+        ],
+      },
+    ],
+  },
+};  // ← закрывающая скобка allContent
 
 export const navItems = (allContent) => [
   { key: "dashboard", ...allContent.dashboard },

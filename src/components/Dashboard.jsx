@@ -124,7 +124,7 @@ const FinanceBlock = ({ loading: globalLoading }) => {
 
   const cards = [
     {
-      label: "Выручка (успешные + предоплаты)",
+      label: "Выручка  (успешные + предоплаты)",
       value: fmt(stats.revenue),
       icon: DollarSign,
       color: "#4ade80",

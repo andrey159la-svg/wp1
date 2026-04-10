@@ -491,36 +491,44 @@ export const allContent = {
     ],
   },
   business: {
-    label: "Бизнес",
-    icon: Briefcase,
-    color: "text-indigo-400",
-    accent: "border-indigo-500/50",
-    bg: "bg-indigo-500/10",
-    data: [
-      {
-        title: "Битрикс",
-        url: "https://warpointmsk.bitrix24.ru/crm/deal/kanban/category/37/",
-      },
-      {
-        title: "Отчёт для УК",
-        url: "https://docs.google.com/spreadsheets/d/1sa2pcp2KnNlxue2vxNHyCio6mNm7Klxw1EfqavwG3ms/edit?gid=0#gid=0",
-      },
-      {
-        title: "Отчёт для Ани",
-        url: "https://docs.google.com/spreadsheets/d/1G9NVq_tI5OEW8hEA2dFjyIKo7gKTbNTkU9C-fMNV4PI/edit?pli=1&gid=1383342728#gid=1383342728",
-      },
-      {
-        title: "График ЗП",
-        url: "https://docs.google.com/spreadsheets/d/1RD73aBGGsBoAsnHFXzR2lSwdR13wz1Rf0RBILXYrTLs/edit?gid=588597447#gid=588597447",
-      },
-      { title: "Эвотор", url: "https://market.evotor.ru/dashboard/summary" },
-      {
-        title: "Таблицы Админов",
-        url: "https://docs.google.com/spreadsheets/d/1Pf2jS-qghk4-6PvGsk7RkzUpwi4fjdonvVVY-Cso-lI/edit?hl=ru&gid=516914401#gid=516914401",
-      },
-    ],
-  }, // ПРОВЕРЬ ЭТУ ЗАПЯТУЮ! Она обязательна перед новым блоком.
-
+  label: "Бизнес",
+  icon: Briefcase,
+  color: "text-indigo-400",
+  accent: "border-indigo-500/50",
+  bg: "bg-indigo-500/10",
+  data: [
+    {
+      title: "Битрикс",
+      url: "https://warpointmsk.bitrix24.ru/crm/deal/kanban/category/37/",
+    },
+    {
+      title: "Отчёт для УК",
+      url: "https://docs.google.com/spreadsheets/d/1sa2pcp2KnNlxue2vxNHyCio6mNm7Klxw1EfqavwG3ms/edit?gid=0#gid=0",
+    },
+    {
+      title: "Отчёт для Ани",
+      url: "https://docs.google.com/spreadsheets/d/1G9NVq_tI5OEW8hEA2dFjyIKo7gKTbNTkU9C-fMNV4PI/edit?pli=1&gid=1383342728#gid=1383342728",
+    },
+    {
+      title: "График ЗП",
+      url: "https://docs.google.com/spreadsheets/d/1RD73aBGGsBoAsnHFXzR2lSwdR13wz1Rf0RBILXYrTLs/edit?gid=588597447#gid=588597447",
+    },
+    { title: "Эвотор", url: "https://market.evotor.ru/dashboard/summary" },
+    {
+      title: "Таблицы Админов",
+      url: "https://docs.google.com/spreadsheets/d/1Pf2jS-qghk4-6PvGsk7RkzUpwi4fjdonvVVY-Cso-lI/edit?hl=ru&gid=516914401#gid=516914401",
+    },
+    {
+      title: "Реквизиты для перевода",
+      type: "dropdown",
+      staff: [
+        { name: "Никита", phone: "+79001112233", bank: "Т-Банк" },
+        { name: "Маша", phone: "+79004445566", bank: "Сбер" },
+        { name: "Илья", phone: "+79007778899", bank: "Альфа" },
+      ],
+    },
+  ],
+}, // Вот эта запятая закрывает весь блок business
   batteries: {
     label: "ЗАРЯД ШЛЕМОВ ПОКА В РАЗРАБОТКЕ...",
     icon: Zap,

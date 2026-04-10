@@ -140,7 +140,7 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       shadow: "rgba(96,165,250,0.3)",
     },
     {
-      label: "Внесли предооплату",
+      label: "Внесли предоплату",
       value: stats.paidCount,
       icon: Percent,
       color: "#fbbf24",

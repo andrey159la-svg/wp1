@@ -536,16 +536,37 @@ export const allContent = {
     data: [
       {
         name: "Для печати",
-        desc: "Листовки, баннеры, полиграфия",
+        desc: "Листовки, баннеры, полиграфия, прайс",
         files: [
-          { name: "Листовка А5.pdf", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+          { name: "Открыть ссылку на файлы для печати", desc: "", url: "https://disk.yandex.ru/d/fzJTZbJlWCswyg" },
         ],
       },
       {
-        name: "Прайсы для ТВ",
-        desc: "Слайды для экранов",
+        name: "Новые презентации",
+        desc: "Презентации и сторис вместе с WARSTATION",
         files: [
-          { name: "Прайс основной.jpg", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+          { name: "Ссылка на презентации", desc: "", url: "https://disk.yandex.ru/d/8SzRnJJrQPqWrQ" },
+        ],
+      },
+      {
+        name: "Всё для турнира",
+        desc: "Положения, грамоты, программа для турнира",
+        files: [
+          { name: "Ссылка на папку", desc: "", url: "https://disk.yandex.ru/d/UPgt-hfI3mWgWg" },
+        ],
+      },
+       {
+        name: "Исходники всякой шляпы",
+        desc: "Тут всякая хуйня смотрите сами",
+        files: [
+          { name: "Ссылка на папку", desc: "", url: "https://disk.yandex.ru/d/h75BmKk-ldYVgA" },
+        ],
+      },
+      {
+        name: "Различные доки для локации",
+        desc: "Планы пола, положения, турниры",
+        files: [
+          { name: "Открыть ссылку на документы", desc: "", url: "https://disk.yandex.ru/d/FKBhZeye4vwm0w" },
         ],
       },
     ],

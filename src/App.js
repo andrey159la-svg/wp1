@@ -1,5 +1,6 @@
 import "./styles.css";
 import InvoiceGenerator from "./InvoiceGenerator";
+import FilesView from "./components/FilesView";
 import { Battery } from "lucide-react";
 import { useSearch } from "./hooks/useSearch";
 import ChecklistView from "./components/ChecklistView";
@@ -362,8 +363,8 @@ const App = () => {
                   />
                 ) : activeTab === "links" ? (
                   <LinksView links={allContent.links.data} />
-                ) : activeTab === "battery" ? (
-                  <BatteryMonitor />
+                ) : activeTab === "files" ? (
+  <FilesView folders={allContent.files.data} />
                 ) : allContent[activeTab]?.isSubfolder ? (
                   <AccessView
                     activeTab={activeTab}

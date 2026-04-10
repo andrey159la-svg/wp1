@@ -528,7 +528,7 @@ export const allContent = {
   },
 
   files: {
-    label: "Файлы",
+    label: "Файлы Эпштейна",
     icon: FolderOpen,
     color: "text-yellow-400",
     accent: "border-yellow-400/50",

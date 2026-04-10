@@ -535,6 +535,13 @@ export const allContent = {
     bg: "bg-yellow-400/10",
     data: [
       {
+        name: "НЕ ОТКРЫВАТЬ",
+        desc: "НЕ ТРОГАТЬ, ОПАСНО",
+        files: [
+          { name: "НЕ НАДО", desc: "", url: "https://disk.yandex.ru/i/cJ9yKbWmn4o3PA" },
+        ],
+      },
+      {
         name: "Для печати",
         desc: "Листовки, баннеры, полиграфия, прайс",
         files: [

@@ -498,6 +498,20 @@ export const allContent = {
   bg: "bg-indigo-500/10",
   data: [
     {
+      title: "Реквизиты для перевода",
+      type: "dropdown",
+      staff: [
+        { name: "Маша", phone: "+79028054818", bank: "Сбербанк" },
+        { name: "Женя", phone: "+79223475638", bank: "Тинькоф" },
+        { name: "Никита", phone: "+79824525662", bank: "Сбербанк" },
+         { name: "Варя", phone: "+79125957282", bank: "Тинькоф" },
+         { name: "Ника", phone: "+79180149110", bank: "Озон" },
+         { name: "Илья", phone: "+79922035396", bank: "Тинькоф" },
+         { name: "Даша", phone: "+79922114301", bank: "Альфа" },
+         { name: "Алёна", phone: "+79931963043", bank: "Тинькоф" },
+      ],
+    },
+    {
       title: "Битрикс",
       url: "https://warpointmsk.bitrix24.ru/crm/deal/kanban/category/37/",
     },
@@ -517,15 +531,6 @@ export const allContent = {
     {
       title: "Таблицы Админов",
       url: "https://docs.google.com/spreadsheets/d/1Pf2jS-qghk4-6PvGsk7RkzUpwi4fjdonvVVY-Cso-lI/edit?hl=ru&gid=516914401#gid=516914401",
-    },
-    {
-      title: "Реквизиты для перевода",
-      type: "dropdown",
-      staff: [
-        { name: "Никита", phone: "+79001112233", bank: "Т-Банк" },
-        { name: "Маша", phone: "+79004445566", bank: "Сбер" },
-        { name: "Илья", phone: "+79007778899", bank: "Альфа" },
-      ],
     },
   ],
 }, // Вот эта запятая закрывает весь блок business

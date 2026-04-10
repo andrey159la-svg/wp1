@@ -54,6 +54,7 @@ const App = () => {
   const [isBitrixLoading, setIsBitrixLoading] = useState(false);
   const [isEquipMenuOpen, setIsEquipMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isStaffMenuOpen, setIsStaffMenuOpen] = useState(false);
 
   // ─── ЛОГИКА ЧЕК-ЛИСТОВ (Задачи) ──────────────────────────────────────────────
   const [completedTasks, setCompletedTasks] = useState(() => {
@@ -376,47 +377,60 @@ const App = () => {
                 ) : (
                   <div className="space-y-2">
                    {allContent[activeTab]?.data.map((item, idx) => {
-  // Проверяем: если мы добавили в объект поле type: "dropdown"
   if (item.type === "dropdown") {
     return (
-      <div key={idx} className="relative group mb-2 last:mb-0">
-        {/* Кнопка меню, стилизованная под TerminalItem */}
+      <div key={idx} className="relative mb-2 last:mb-0">
+        {/* Кнопка: теперь по клику меняет стейт */}
         <div 
-          className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all cursor-pointer"
+          onClick={() => setIsStaffMenuOpen(!isStaffMenuOpen)}
+          className={`flex items-center justify-between p-4 rounded-xl border transition-all cursor-pointer ${
+            isStaffMenuOpen 
+              ? 'border-indigo-500/50 bg-indigo-500/15 shadow-[0_0_20px_rgba(79,70,229,0.1)]' 
+              : 'border-white/5 bg-white/5 hover:bg-white/10'
+          }`}
         >
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg bg-indigo-500/20 text-indigo-400`}>
+            <div className={`p-2 rounded-lg transition-colors ${
+              isStaffMenuOpen ? 'bg-indigo-500 text-white' : 'bg-indigo-500/20 text-indigo-400'
+            }`}>
               <ExternalLink size={18} />
             </div>
             <span className="text-sm font-medium text-slate-200">{item.title}</span>
           </div>
-          {/* Иконка стрелочки, которая крутится при наведении */}
-          <ChevronDown size={16} className="text-slate-500 group-hover:text-white transition-transform duration-300 group-hover:rotate-180" />
+          {/* Стрелочка крутится в зависимости от стейта */}
+          <ChevronDown 
+            size={16} 
+            className={`text-slate-500 transition-transform duration-300 ${isStaffMenuOpen ? 'rotate-180 text-white' : ''}`} 
+          />
         </div>
 
-        {/* Само меню (вылетает при наведении на родительский group) */}
-        <div className="absolute left-0 top-full mt-1 w-full md:w-80 hidden group-hover:block z-50 bg-[#1a1d23] border border-indigo-500/30 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md">
-          {item.staff.map((person, pIdx) => (
-            <div key={pIdx} className="p-4 hover:bg-white/5 border-b border-white/5 last:border-none group/item">
-              <div className="flex justify-between items-start mb-1">
-                <span className="text-sm font-bold text-white group-hover/item:text-indigo-400 transition-colors">
-                  {person.name}
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 uppercase tracking-wider font-bold">
-                  {person.bank}
-                </span>
-              </div>
-              <div className="text-sm text-zinc-400 font-mono select-all cursor-pointer hover:text-white transition-colors">
-                {person.phone}
-              </div>
+        {/* Само меню: теперь показывается только если isStaffMenuOpen === true */}
+        {isStaffMenuOpen && (
+          <div className="mt-2 w-full bg-[#1a1d23]/80 border border-indigo-500/30 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md z-50">
+            <div className="max-h-[350px] overflow-y-auto custom-scrollbar">
+              {item.staff.map((person, pIdx) => (
+                <div key={pIdx} className="p-4 hover:bg-white/5 border-b border-white/5 last:border-none group/item">
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="text-sm font-bold text-white group-hover/item:text-indigo-400 transition-colors">
+                      {person.name}
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 uppercase tracking-wider font-bold">
+                      {person.bank}
+                    </span>
+                  </div>
+                  <div className="text-sm text-zinc-400 font-mono select-all cursor-pointer hover:text-white transition-colors">
+                    {person.phone}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
 
-  // Если это обычная ссылка (как раньше)
+  // Обычный айтем
   return (
     <TerminalItem
       key={idx}

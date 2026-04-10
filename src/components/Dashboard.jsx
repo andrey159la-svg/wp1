@@ -97,6 +97,8 @@ const FinanceBlock = ({ loading: globalLoading }) => {
 
     const wonDeals = localDeals.filter((d) => d.STAGE_ID === "C37:WON");
     const paidDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_EABX1N");
+    // Твоя новая колонка (стадия)
+    const extraDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_XBD8P1");
 
     const sumWon = wonDeals.reduce(
       (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
@@ -106,12 +108,18 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
       0
     );
+    // Считаем сумму для новой стадии
+    const sumExtra = extraDeals.reduce(
+      (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
+      0
+    );
 
     return {
-      revenue: sumWon + sumPaid,
+      // Плюсуем всё вместе в общую выручку
+      revenue: sumWon + sumPaid + sumExtra,
       avgCheck: wonDeals.length > 0 ? sumWon / wonDeals.length : 0,
       wonCount: wonDeals.length,
-      paidCount: paidDeals.length,
+      paidCount: paidDeals.length + extraDeals.length, // Если нужно, чтобы они тоже светились в "Внесли предоплату"
     };
   }, [localDeals]);
 

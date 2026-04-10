@@ -525,9 +525,32 @@ export const allContent = {
     color: "text-green-400",
   },
 };
+files: {
+  label: "Файлы",
+  icon: FolderOpen,   // добавь FolderOpen в импорт lucide-react
+  color: "text-yellow-400",
+  data: [
+    {
+      name: "Для печати",
+      desc: "Листовки, баннеры, полиграфия",
+      files: [
+        { name: "Листовка А5.pdf", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+      ],
+    },
+    {
+      name: "Прайсы для ТВ",
+      desc: "Слайды для экранов",
+      files: [
+        { name: "Прайс основной.jpg", desc: "", url: "https://disk.yandex.ru/d/ССЫЛКА" },
+      ],
+    },
+    // новые папки добавляй сюда же по тому же шаблону
+  ],
+},
 
 export const navItems = (allContent) => [
   { key: "dashboard", ...allContent.dashboard },
+  { key: "files", ...allContent.files },
   { key: "links", ...allContent.links },
   { key: "checklists", ...allContent.checklists },
   {

@@ -120,7 +120,7 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
           <DollarSign size={14} className="text-emerald-400" />
-          Финансы · {isDefaultRange ? "текущий месяц" : "диапазон"}
+          Финансы (Сухие цифры из Bitrix24) · {isDefaultRange ? "текущий месяц" : "диапазон"}
         </h3>
         <div className="flex items-center gap-2 bg-slate-900/50 p-1.5 rounded-xl border border-white/5 shadow-2xl backdrop-blur-sm">
           <CalendarRange size={14} className="text-blue-400 ml-2" />

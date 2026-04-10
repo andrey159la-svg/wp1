@@ -49,27 +49,21 @@ const fmt = (n) =>
     : `${n.toFixed(0)} ₽`;
 
 // ─── Финансовый блок ────────────────────────────────────────────────────────
-// ─── Финансовый блок ────────────────────────────────────────────────────────
 const FinanceBlock = ({ loading: globalLoading }) => {
   const [localDeals, setLocalDeals] = useState([]);
   const [localLoading, setLocalLoading] = useState(false);
 
-  // Фикс часового пояса: переводит дату в строку YYYY-MM-DD без прыжков в прошлое
   const getLocalDateString = (date) => {
     const offset = date.getTimezoneOffset();
     const adjustedDate = new Date(date.getTime() - offset * 60 * 1000);
     return adjustedDate.toISOString().split("T")[0];
   };
 
-  // По дефолту: с 1-го числа текущего месяца (01.04.2026) по сегодня
   const [dates, setDates] = useState({
-    from: getLocalDateString(
-      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    ),
+    from: getLocalDateString(new Date(new Date().getFullYear(), new Date().getMonth(), 1)),
     to: getLocalDateString(new Date()),
   });
 
-  // Функция для загрузки данных
   const loadFinanceData = useCallback(async () => {
     setLocalLoading(true);
     try {
@@ -90,49 +84,39 @@ const FinanceBlock = ({ loading: globalLoading }) => {
     loadFinanceData();
   }, [loadFinanceData]);
 
-  // Считаем статы
   const stats = useMemo(() => {
     if (!localDeals || localDeals.length === 0)
-      return { revenue: 0, avgCheck: 0, wonCount: 0, paidCount: 0 };
+      return { revenue: 0, avgCheck: 0, wonCount: 0, paidCount: 0, conversion: 0 };
 
+    // 1. Фильтруем успешные стадии для выручки и конверсии
     const wonDeals = localDeals.filter((d) => d.STAGE_ID === "C37:WON");
     const paidDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_EABX1N");
-    // Твоя новая колонка (стадия)
-    const extraDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_XBD8P1");
+    const bukzaDeals = localDeals.filter((d) => d.STAGE_ID === "C37:UC_XBD8P1");
 
-    const sumWon = wonDeals.reduce(
-      (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
-      0
-    );
-    const sumPaid = paidDeals.reduce(
-      (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
-      0
-    );
-    // Считаем сумму для новой стадии
-    const sumExtra = extraDeals.reduce(
-      (acc, d) => acc + parseFloat(d.OPPORTUNITY || 0),
-      0
-    );
+    // 2. Исключаем некорректные лиды (предположим ID стадии 'C37:LOSE' или 'C37:APOLOGY')
+    // Замени "C37:LOSE" на реальный ID стадии некорректных лидов, если он другой
+    const validDeals = localDeals.filter((d) => d.STAGE_ID !== "C37:13");
+
+    const sumWon = wonDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
+    const sumPaid = paidDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
+    const sumBukza = bukzaDeals.reduce((acc, d) => acc + parseFloat(d.OPPORTUNITY || 0), 0);
+
+    // Расчет конверсии: (Успех + Предоплата + Букза) / Всего годных
+    const totalSuccess = wonDeals.length + paidDeals.length + bukzaDeals.length;
+    const conversion = validDeals.length > 0 ? (totalSuccess / validDeals.length) * 100 : 0;
 
     return {
-      // Плюсуем всё вместе в общую выручку
-      revenue: sumWon + sumPaid + sumExtra,
+      revenue: sumWon + sumPaid + sumBukza,
       avgCheck: wonDeals.length > 0 ? sumWon / wonDeals.length : 0,
       wonCount: wonDeals.length,
-      paidCount: paidDeals.length + extraDeals.length, // Если нужно, чтобы они тоже светились в "Внесли предоплату"
+      paidCount: paidDeals.length + bukzaDeals.length,
+      conversion: conversion.toFixed(1), // Оставляем один знак после запятой
     };
   }, [localDeals]);
 
-  const isDefaultRange = useMemo(() => {
-    const monthStart = getLocalDateString(
-      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    );
-    return dates.from === monthStart;
-  }, [dates]);
-
   const cards = [
     {
-      label: "Выручка (успешные + предоплаты)",
+      label: "Выручка",
       value: fmt(stats.revenue),
       icon: DollarSign,
       color: "#4ade80",
@@ -140,15 +124,15 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       shadow: "rgba(74,222,128,0.3)",
     },
     {
-      label: "Средний чек (успешные)",
-      value: fmt(stats.avgCheck),
-      icon: Receipt,
-      color: "#60a5fa",
-      bg: "rgba(96,165,250,0.12)",
-      shadow: "rgba(96,165,250,0.3)",
+      label: "Конверсия (чистая)",
+      value: `${stats.conversion}%`,
+      icon: Activity, // Иконка пульса/активности для конверсии
+      color: "#f472b6", // Розовый акцент
+      bg: "rgba(244,114,182,0.12)",
+      shadow: "rgba(244,114,182,0.3)",
     },
     {
-      label: "Внесли предоплату",
+      label: "Предоплаты + Bukza",
       value: stats.paidCount,
       icon: Percent,
       color: "#fbbf24",
@@ -164,6 +148,10 @@ const FinanceBlock = ({ loading: globalLoading }) => {
       shadow: "rgba(52,211,153,0.3)",
     },
   ];
+
+  const isLoading = localLoading || globalLoading;
+
+  // ... дальше JSX такой же, как у тебя в коде
 
   const isLoading = localLoading || globalLoading;
 

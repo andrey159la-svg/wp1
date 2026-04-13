@@ -74,3 +74,30 @@ export const fetchNewLeadsCount = async () => {
   const data = await response.json();
   return data.total || 0;
 };
+// Поиск сотрудника по имени или фамилии
+export const fetchUserIdByName = async (nameOrLastName) => {
+  // Пробуем найти сначала по имени
+  let res = await fetch(`${BITRIX_WEBHOOK_URL}user.get`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      FILTER: { "NAME": nameOrLastName }
+    }),
+  });
+  let data = await res.json();
+
+  // Если по имени пусто, пробуем по фамилии
+  if (!data.result || data.result.length === 0) {
+    res = await fetch(`${BITRIX_WEBHOOK_URL}user.get`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+      FILTER: { "LAST_NAME": nameOrLastName }
+    }),
+    });
+    data = await res.json();
+  }
+
+  // Возвращаем ID первого найденного или null
+  return data.result?.[0]?.ID || null;
+};

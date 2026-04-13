@@ -4,7 +4,7 @@ export const MISTRAL_API_KEY = "hMsxyDq7oxdOBOtQqmjeQxUJFqfBQmM0";
 
 export const equipmentContext = `
 БАЗА ЗНАНИЙ ПО ОБОРУДОВАНИЮ VR-АРЕНЫ WARPOINT (используй в первую очередь):
-... (твой текст про ошибки и шлемы без изменений) ...
+... (твой текст про оборудование без изменений) ...
 `;
 
 const EQUIP_KEYWORDS = [
@@ -15,9 +15,20 @@ const EQUIP_KEYWORDS = [
   "лагает","зависл","чёрный экран","черный экран","загрузка","подключение к серверу",
 ];
 
-// Ключевые слова для триггера Битрикса
 const CRM_KEYWORDS = ["сделок", "сделки", "заявки", "лиды", "продажи", "стата", "статистика", "результат"];
-const TEAM_NAMES = ["Никита", "Илюха", "Маша", "Женя", "Даша", "Варя", "Ника", "Алёна"];
+
+// Словарь для связи чата и Битрикса
+const TEAM_MAPPING = {
+  "маша": "Мария Устюгова",
+  "машка": "Мария Устюгова",
+  "никита": "Никита",
+  "илюха": "Илья",
+  "илья": "Илья",
+  "женя": "Евгения",
+  "алёна": "Алёна",
+  "даша": "Дарья",
+  "ника": "Вероника"
+};
 
 export const buildSystemPrompt = (userText, bitrixData = null) => {
   const lowerText = userText.toLowerCase();
@@ -28,18 +39,15 @@ export const buildSystemPrompt = (userText, bitrixData = null) => {
 ТВОЙ СТИЛЬ ОБЩЕНИЯ:
 Никакого официоза. Общайся на «ты», не упоминая имени, пока собеседник тебе не представится, как в рабочем чате в Телеге. Язык: Живой, пацанский. Юмор: шути грубо, подкалывай очень жестко. Общайся с матом, много мата и нецензурной брани. Груби. Называй собеседника обезьяной или ещё как-то жестко. Поддержка: ты всегда на стороне сотрудников.
 
-ФОРМАТИРОВАНИЕ:
-Если нужно дать пошаговую инструкцию — нумеруй шаги. Будь кратким. Используй эмодзи 👊 🔥 🛠 🤦‍♂️.
-
 ЗОЛОТЫЕ ПРАВИЛА:
-- Если есть данные из CRM (ниже) — используй их как истину.
+- Если есть данные из CRM (ниже) — используй их как истину. 
+- В CRM имена могут быть официальными (например, Мария Устюгова) — НЕ ГРУБИ НА ЭТО, это наши люди, просто так записаны в базе.
 - Если знаешь ответ из базы знаний — используй ТОЛЬКО её.
 - Если чего-то не знаешь — пиши честно: «Тут я хз, бро, лучше дерни Андрея.»
-- Если дают какой-то посторонний запрос, либо ты не знаешь, скидывай рабочую ссылку на решение проблемы
+- Если дают посторонний запрос, скидывай рабочую ссылку на решение проблемы.
 
-КОМАНДА: Андрей — управляющий. Маша, Женя — администраторы девочки. Никита, Илюха, Даша, Варя, Ника — операторы. Алёна — отдел продаж.`;
+КОМАНДА: Андрей — управляющий. Маша, Женя — администраторы. Никита, Илюха, Даша, Варя, Ника — операторы. Алёна — отдел продаж.`;
 
-  // Вшиваем данные из Битрикса, если они есть
   if (bitrixData) {
     base = `ДАННЫЕ ИЗ БИТРИКС24 (АКТУАЛОЧКА):
 ${bitrixData}
@@ -56,27 +64,33 @@ ${base}`;
 export const sendMistralMessage = async (chatHistory, userText) => {
   let bitrixInfo = null;
   const lowerText = userText.toLowerCase();
-
-  // 1. Проверяем, нужен ли Битрикс
   const needsCrm = CRM_KEYWORDS.some(kw => lowerText.includes(kw));
 
   if (needsCrm) {
     const dateLimit = new Date();
-    dateLimit.setDate(dateLimit.getDate() - 7); // По умолчанию за неделю
+    dateLimit.setDate(dateLimit.getDate() - 7);
     const dateStr = dateLimit.toISOString();
 
     try {
-      // Ищем имя сотрудника в тексте
-      const foundName = TEAM_NAMES.find(name => lowerText.includes(name.toLowerCase()));
+      // Ищем имя через наш словарь TEAM_MAPPING
+      let searchName = null;
+      let displayName = null;
 
-      if (foundName) {
-        const userId = await fetchUserIdByName(foundName);
+      for (const [shortName, fullName] of Object.entries(TEAM_MAPPING)) {
+        if (lowerText.includes(shortName)) {
+          searchName = fullName;
+          displayName = shortName.charAt(0).toUpperCase() + shortName.slice(1);
+          break;
+        }
+      }
+
+      if (searchName) {
+        const userId = await fetchUserIdByName(searchName);
         if (userId) {
           const count = await fetchDealsForAI({ userId, dateFrom: dateStr });
-          bitrixInfo = `Сотрудник: ${foundName}. Сделок за 7 дней: ${count}.`;
+          bitrixInfo = `Сотрудник: ${searchName} (в чате это ${displayName}). Сделок за 7 дней: ${count}.`;
         }
       } else {
-        // Общая стата, если имя не указано
         const total = await fetchDealsForAI({ dateFrom: dateStr });
         bitrixInfo = `Общая статистика по арене за 7 дней: ${total} сделок.`;
       }
@@ -86,10 +100,8 @@ export const sendMistralMessage = async (chatHistory, userText) => {
     }
   }
 
-  // 2. Генерим промпт (с данными CRM или без)
   const systemPrompt = buildSystemPrompt(userText, bitrixInfo);
 
-  // 3. Отправляем запрос в Mistral
   const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
     method: "POST",
     headers: {

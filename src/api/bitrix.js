@@ -101,3 +101,27 @@ export const fetchUserIdByName = async (nameOrLastName) => {
   // Возвращаем ID первого найденного или null
   return data.result?.[0]?.ID || null;
 };
+// Универсальный запрос сделок для Андрюхи
+export const fetchDealsForAI = async (params) => {
+  const { userId, dateFrom } = params;
+  
+  const filter = {
+    CATEGORY_ID: 37,
+    ">=DATE_CREATE": dateFrom,
+  };
+  
+  // Если спросили про конкретного чела — добавляем фильтр по ответственному
+  if (userId) {
+    filter.ASSIGNED_BY_ID = userId;
+  }
+
+  const res = await fetch(`${BITRIX_WEBHOOK_URL}crm.deal.list`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ filter, select: ["ID"] }),
+  });
+  
+  const data = await res.json();
+  // Возвращаем общее количество сделок
+  return data.total || 0;
+};

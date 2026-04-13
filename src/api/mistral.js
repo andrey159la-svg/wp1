@@ -17,7 +17,6 @@ const EQUIP_KEYWORDS = [
 
 const CRM_KEYWORDS = ["сделок", "сделки", "заявки", "лиды", "продажи", "стата", "статистика", "результат"];
 
-// Словарь для связи чата и Битрикса
 const TEAM_MAPPING = {
   "маша": "Мария Устюгова",
   "машка": "Мария Устюгова",
@@ -30,6 +29,26 @@ const TEAM_MAPPING = {
   "ника": "Вероника"
 };
 
+// Функция для определения периода времени из текста
+const parseDateRange = (text) => {
+  const now = new Date();
+  const lower = text.toLowerCase();
+  let from = new Date();
+
+  if (lower.includes("сегодня")) {
+    from.setHours(0, 0, 0, 0);
+  } else if (lower.includes("вчера")) {
+    from.setDate(now.getDate() - 1);
+    from.setHours(0, 0, 0, 0);
+  } else if (lower.includes("месяц")) {
+    from.setDate(1); // С начала текущего месяца
+    from.setHours(0, 0, 0, 0);
+  } else {
+    from.setDate(now.getDate() - 7); // Дефолт 7 дней
+  }
+  return from.toISOString();
+};
+
 export const buildSystemPrompt = (userText, bitrixData = null) => {
   const lowerText = userText.toLowerCase();
   const isEquipQuestion = EQUIP_KEYWORDS.some((kw) => lowerText.includes(kw));
@@ -40,11 +59,10 @@ export const buildSystemPrompt = (userText, bitrixData = null) => {
 Никакого официоза. Общайся на «ты», не упоминая имени, пока собеседник тебе не представится, как в рабочем чате в Телеге. Язык: Живой, пацанский. Юмор: шути грубо, подкалывай очень жестко. Общайся с матом, много мата и нецензурной брани. Груби. Называй собеседника обезьяной или ещё как-то жестко. Поддержка: ты всегда на стороне сотрудников.
 
 ЗОЛОТЫЕ ПРАВИЛА:
-- Если есть данные из CRM (ниже) — используй их как истину. 
-- В CRM имена могут быть официальными (например, Мария Устюгова) — НЕ ГРУБИ НА ЭТО, это наши люди, просто так записаны в базе.
+- Если есть данные из CRM (ниже) — используй их как истину. НЕ ВЫДУМЫВАЙ СВОИ ЦИФРЫ. Если в данных написано 18, отвечай 18.
+- В CRM имена могут быть официальными (например, Мария Устюгова) — НЕ ГРУБИ НА ЭТО, это наши люди.
 - Если знаешь ответ из базы знаний — используй ТОЛЬКО её.
 - Если чего-то не знаешь — пиши честно: «Тут я хз, бро, лучше дерни Андрея.»
-- Если дают посторонний запрос, скидывай рабочую ссылку на решение проблемы.
 
 КОМАНДА: Андрей — управляющий. Маша, Женя — администраторы. Никита, Илюха, Даша, Варя, Ника — операторы. Алёна — отдел продаж.`;
 
@@ -67,12 +85,9 @@ export const sendMistralMessage = async (chatHistory, userText) => {
   const needsCrm = CRM_KEYWORDS.some(kw => lowerText.includes(kw));
 
   if (needsCrm) {
-    const dateLimit = new Date();
-    dateLimit.setDate(dateLimit.getDate() - 7);
-    const dateStr = dateLimit.toISOString();
+    const dateStr = parseDateRange(lowerText);
 
     try {
-      // Ищем имя через наш словарь TEAM_MAPPING
       let searchName = null;
       let displayName = null;
 
@@ -88,11 +103,11 @@ export const sendMistralMessage = async (chatHistory, userText) => {
         const userId = await fetchUserIdByName(searchName);
         if (userId) {
           const count = await fetchDealsForAI({ userId, dateFrom: dateStr });
-          bitrixInfo = `Сотрудник: ${searchName} (в чате это ${displayName}). Сделок за 7 дней: ${count}.`;
+          bitrixInfo = `Сотрудник: ${searchName}. Сделок найдено: ${count}. Период: с ${dateStr}.`;
         }
       } else {
         const total = await fetchDealsForAI({ dateFrom: dateStr });
-        bitrixInfo = `Общая статистика по арене за 7 дней: ${total} сделок.`;
+        bitrixInfo = `Общая статистика по арене. Всего сделок: ${total}. Период: с ${dateStr}. ТЫ ДОЛЖЕН НАЗВАТЬ ИМЕННО ЭТО ЧИСЛО!`;
       }
     } catch (err) {
       console.error("CRM Error:", err);

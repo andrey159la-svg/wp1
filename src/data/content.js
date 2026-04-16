@@ -518,6 +518,14 @@ export const allContent = {
       url: "https://warpointmsk.bitrix24.ru/crm/deal/kanban/category/37/",
     },
     {
+      title: "Яндекс Бизнес",
+      url: "https://yandex.ru/sprav/170631485159/p/edit/reviews/",
+    },
+    {
+      title: "2GIS Бизнес",
+      url: "https://account.2gis.com/orgs/70000001053114503/reviews",
+    },
+    {
       title: "Отчёт для УК",
       url: "https://docs.google.com/spreadsheets/d/1sa2pcp2KnNlxue2vxNHyCio6mNm7Klxw1EfqavwG3ms/edit?gid=0#gid=0",
     },

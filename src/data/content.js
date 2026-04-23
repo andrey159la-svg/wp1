@@ -161,6 +161,12 @@ export const allContent = {
         icon: Scale,
         desc: "Доска позора",
       },
+      {
+        title: "ТИКЕТ В ПОДДЕРЖКУ",
+        url: "https://warpoint.admin24.app/form/ac10a285-86a9-4c88-84b3-fd11aba93e37",
+        icon: Scale,
+        desc: "Тут можно составить тикет в поддержку. отвечают быстро",
+      },
     ],
   },
   checklists: {

@@ -413,6 +413,7 @@ export const allContent = {
         icon: Globe,
         items: [
           { label: "ARENA 5G", val: "Логин: ARENA_5G\nПароль: qwerty123456" },
+          { label: "VPN", val: "Логин: VPN\nПароль: 90902475" },
           { label: "RT-Wifi", val: "Логин: RT-WiFi\nПароль: QWERTY123456" },
           {
             label: "Ростелеком",

@@ -236,7 +236,7 @@ const Sidebar = ({
                 />
               </div>
               <span className="text-[11px] font-black uppercase tracking-tight flex-1 text-left">
-                Андрюха знает всё
+                ИИ Тяночка мяу
               </span>
               <Zap
                 size={12}

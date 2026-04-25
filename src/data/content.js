@@ -608,14 +608,6 @@ export const allContent = {
         ],
       },
     ],
-  },
-  leaderboard: {
-  label: "Топ игроков",
-  icon: Trophy,
-  color: "text-yellow-400",
-  accent: "border-yellow-500/50",
-  bg: "bg-yellow-500/10",
-  data: [],
 },
 };  // ← закрывающая скобка allContent
 

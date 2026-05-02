@@ -37,7 +37,7 @@ import {
 export const bitrixUsers = [
   { name: "Андрей", login: "andrey59la@yandex.ru", pass: "Alik13750" },
   { name: "Алёна", login: "Titov.ru90@mail.ru", pass: "Yarik170314@" },
-  { name: "Маша", login: "WARPERM2", pass: "WAR96@22" },
+  { name: "Маша", login: "WARPERM2@mail.ru", pass: "WAR96@22" },
   { name: "Женя", login: "Warperm1@mail.ru", pass: "WARPERM1" },
 ];
 

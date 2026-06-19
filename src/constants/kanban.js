@@ -63,4 +63,4 @@ export const KANBAN_STAGES = [
 ];
 
 export const BITRIX_WEBHOOK_URL =
-  "https://warpointmsk.bitrix24.ru/rest/7735/k4gjdbgxeqz1i6te/";
+  "https://warpointmsk.bitrix24.ru/rest/7735/k4gjdbgxez1i6te/";

@@ -1,5 +1,5 @@
 // 1. Ключ лучше тянуть из окружения. В реакте это обычно process.env.REACT_APP_MISTRAL_KEY
-const MISTRAL_API_KEY = "hMsxyDq7oxdOBOtQqmjeQxUJFqfBQmM0"; 
+const MISTRAL_API_KEY = "hMsxyDq7oxdOBOtQqmjeQUJFqfBQmM0"; 
 
 export const equipmentContext = `
 БАЗА ТЕХПОДДЕРЖКИ WARPOINT (ПРИОРУ):

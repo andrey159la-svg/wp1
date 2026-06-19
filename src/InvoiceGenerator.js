@@ -79,7 +79,7 @@ const WP_BillingSystem = () => {
           {/* СЕЛЕКТОР ТИПА ДОКУМЕНТА */}
           <div className="relative mb-6">
             <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-2 block">
-              Тип документа
+              Закрывающий документ
             </label>
             <button
               onClick={() => setShowDocMenu(!showDocMenu)}
@@ -114,9 +114,9 @@ const WP_BillingSystem = () => {
                 >
                   <FileText size={18} className="text-cyan-400" />
                   <div>
-                    <div className="text-sm font-bold">Счет на оплату</div>
+                    <div className="text-sm font-bold">Закрывающий документ</div>
                     <div className="text-[10px] text-slate-500">
-                      Предварительная оплата услуг
+                      Закрывающий документ
                     </div>
                   </div>
                 </button>
@@ -130,7 +130,7 @@ const WP_BillingSystem = () => {
                   <ClipboardCheck size={18} className="text-yellow-400" />
                   <div>
                     <div className="text-sm font-bold">
-                      Акт выполненных работ
+                      Закрывающий документ
                     </div>
                     <div className="text-[10px] text-slate-500">
                       Закрывающий документ
@@ -370,13 +370,13 @@ const WP_BillingSystem = () => {
                       padding: "4px 6px",
                     }}
                   >
-                    ИНН 024800589963
+                    ИНН 02480089963
                   </td>
                   <td style={{ border: "1px solid #000", padding: "4px 6px" }}>
                     Корр. счёт
                   </td>
                   <td style={{ border: "1px solid #000", padding: "4px 6px" }}>
-                    30101810745374525104
+                    3010181075374525104
                   </td>
                 </tr>
                 <tr>
@@ -448,7 +448,7 @@ const WP_BillingSystem = () => {
               <strong>
                 {docType === "invoice" ? "Поставщик" : "Исполнитель"}:
               </strong>{" "}
-              ИП Титова Анна Сергеевна, ИНН 024800589963, 620034, Свердловская
+              ИП Титова Анна Сергеевна, ИНН 02400589963, 620034, Свердловская
               обл., г Екатеринбург, ул. Черепанова, дом 36, кв 5
             </p>
             <p style={{ margin: "10px 0 5px 0" }}>
@@ -473,7 +473,7 @@ const WP_BillingSystem = () => {
           {docType === "act" && (
             <p style={{ fontSize: "10pt", marginBottom: "10px" }}>
               Мы, нижеподписавшиеся, Исполнитель и Заказчик, составили настоящий
-              Акт о том, что Исполнителем были оказаны следующие услуги:
+              Акт о том, что Исполнитказаны следующие услуги:
             </p>
           )}
 
@@ -656,7 +656,7 @@ const WP_BillingSystem = () => {
               }}
             >
               <p>
-                Вышеуказанные услуги оказаны в полном объеме и в срок. Заказчик
+                Вышеуказанные услуги оказаныолном объеме и в срок. Заказчик
                 претензий по объему, качеству и срокам оказания услуг не имеет.
               </p>
             </div>

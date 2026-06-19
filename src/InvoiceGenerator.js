@@ -697,50 +697,6 @@ const WP_BillingSystem = () => {
                   fontSize: "7pt",
                   textAlign: "center",
                   marginTop: "2px",
-                }}
-              >
-                подпись
-              </div>
-            </div>
-            <div style={{ width: "45%" }}>
-              <p
-                style={{
-                  fontWeight: "bold",
-                  marginBottom: "30px",
-                  fontSize: "10pt",
-                }}
-              >
-                {docType === "invoice" ? "Покупатель" : "Заказчик"}:
-              </p>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  borderBottom: "1px solid #000",
-                }}
-              >
-                <div style={{ flex: 1, height: "20px" }}></div>
-                <div style={{ fontSize: "10pt", paddingLeft: "5px" }}>
-                  /
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  /
-                </div>
-              </div>
-              <div
-                style={{
-                  fontSize: "7pt",
-                  textAlign: "center",
-                  marginTop: "2px",
-                }}
-              >
-                подпись
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+
 
 export default WP_BillingSystem;
